@@ -1,0 +1,66 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Threading.Tasks;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.AspNetCore.Builder;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.EntityFrameworkCore;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.Extensions.DependencyInjection;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.Extensions.Logging;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>namespace User.API.Data</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>{</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public class UserContextSeed</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        private ILogger&lt;UserContextSeed&gt; _logger;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public UserContextSeed(ILogger&lt;UserContextSeed&gt; logger)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            _logger = logger;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var retryForAvaiability = retry.Value;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            try</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                using (var scope = applicationBuilder.ApplicationServices.CreateScope())</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    var context = (UserContext)scope.ServiceProvider.GetService(typeof(UserContext));</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    var logger = (ILogger&lt;UserContextSeed&gt;)scope.ServiceProvider.GetService(typeof(ILogger&lt;UserContextSeed&gt;));</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    logger.LogDebug(&quot;Begin UserContextSeed SeedAsync&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    context.Database.Migrate();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    if (!context.Users.Any())</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        context.Users.Add(new Models.AppUser { Name = &quot;evan&quot; });</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        context.SaveChanges();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            catch (Exception ex)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                if (retryForAvaiability &lt; 10)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    retryForAvaiability++;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    var logger = loggerFactory.CreateLogger(typeof(UserContextSeed));</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    logger.LogError(ex.Message);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    await SeedAsync(applicationBuilder, loggerFactory, retryForAvaiability);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>}</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+stages:
+ - build
+ - test
+ - package
+ - deploy
+ - release
+
+
+build:
+ stage: build
+ script:
+  - cd User.API
+  - dotnet build
+
+
+test:
+  stage: test
+  script: 
+   - dotnet restore
+   - dotnet build
+   - cd minicover
+   - dotnet restore
+   - dotnet minicover instrument --workdir ../ --assemblies User.API.UnitTests/bin/**/*.dll --sources User.API/**/*.cs
+   - dotnet minicover reset
+   - cd ..
+   - dotnet test --no-build User.API.UnitTests/User.API.UnitTests.csproj
+   - cd minicover
+   - dotnet minicover report --workdir ../ --threshold 10
+   
+
+
+package:
+  stage: package
+  script: 
+   - cd User.API
+   - docker build -t userapi:test .
+   - docker login --username=evan --password Pwd123456 192.168.0.203
+   - docker tag userapi:test 192.168.0.203/myproject/userapi:test
+   - docker push 192.168.0.203/myproject/userapi:test
+
+
+deploy:
+  stage: deploy
+  script:
+   - if [ $(docker ps -aq --filter name=userapi) ]; then docker rm -f userapi;fi 
+   - docker run -d -p 8003:80 --link db-mysql --network net_db --name userapi 192.168.0.203/myproject/userapi:test
+
+
+release:
+  stage: release
+  script: 
+   - cd User.API
+   - kubectl apply -f deploy.yaml
+  only: 
+   - tags 
+
+
+# job:
+#   stage: build-lose
+#   script:
+#   - ls
+#   - cd User.API
+#   - ls
+#   - echo "Restoring NuGet Packages..."
+#   - if [ $(docker ps -aq --filter name=aspnetcore) ]; then docker rm -f aspnetcore;fi 
+#   - docker-compose up -d --build --force-recreate
+ 

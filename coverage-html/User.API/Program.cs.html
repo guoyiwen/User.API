@@ -1,0 +1,30 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.IO;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Threading.Tasks;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.AspNetCore;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.AspNetCore.Hosting;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.Extensions.Configuration;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.Extensions.Logging;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>namespace User.API</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>{</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public class Program</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public static void Main(string[] args)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            BuildWebHost(args).Run();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        private static IWebHost BuildWebHost(string[] args) =&gt;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            WebHost.CreateDefaultBuilder(args)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                .UseStartup&lt;Startup&gt;()</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                //.UseUrls(&quot;http://+:5000&quot;)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                .Build();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>}</div>
+</body>
+</html>

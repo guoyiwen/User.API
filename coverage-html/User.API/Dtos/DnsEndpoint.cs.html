@@ -1,0 +1,24 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Net;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Threading.Tasks;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>namespace User.API.Dtos</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>{</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>  public class DnsEndpoint</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>  {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public string Address { get; set; }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public int Port { get; set; }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public IPEndPoint ToIPEndPoint()</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>      return new IPEndPoint(IPAddress.Parse(Address), Port);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>  }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>}</div>
+</body>
+</html>

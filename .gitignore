@@ -1,0 +1,25 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/.vs/User.API/v15
+/.vs
+/Contact.API/bin/Debug/netcoreapp2.0
+/Geteway.API/bin/Debug/netcoreapp2.1
+/Geteway.API/obj
+/Project.API/bin/Debug
+/Project.API/obj
+/Project.Domain/bin/Debug/netcoreapp2.0
+/Project.Domain/obj
+/Project.Infrastructure/bin/Debug/netcoreapp2.0
+/Project.Infrastructure/obj
+/Recommand.API/bin/Debug/netcoreapp2.0
+/Resilience/bin/Debug/netcoreapp2.0
+/Resilience/obj
+/User.API/bin/Debug/netcoreapp2.0
+/User.API/obj
+/User.API.UnitTests/bin/Debug/netcoreapp2.1
+/User.API.UnitTests/obj
+/User.Identity/bin/Debug/netcoreapp2.0
+/User.Identity/obj
+/Contact.API/obj

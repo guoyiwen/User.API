@@ -1,0 +1,167 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.EntityFrameworkCore.Migrations;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>namespace User.API.Migrations</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>{</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public partial class addUserEntites : Migration</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        protected override void Up(MigrationBuilder migrationBuilder)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;string&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Address&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: true);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;string&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Avatar&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: true);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;string&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;City&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: true);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;int&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;CityId&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: false,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                defaultValue: 0);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;string&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Email&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: true);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;byte&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Gender&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: false,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                defaultValue: (byte)0);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;string&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Phone&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: true);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;int&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;ProvinceId&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: false,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                defaultValue: 0);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.AddColumn&lt;string&gt;(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Tel&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                nullable: true);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.CreateTable(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;UserBPFile&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                columns: table =&gt; new</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Id = table.Column&lt;int&gt;(nullable: false)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        .Annotation(&quot;MySQL:AutoIncrement&quot;, true),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    CreatedTime = table.Column&lt;DateTime&gt;(nullable: false),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    FileName = table.Column&lt;string&gt;(nullable: true),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    FromatFilePath = table.Column&lt;string&gt;(nullable: true),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    OriginFilePath = table.Column&lt;string&gt;(nullable: true),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    UserId = table.Column&lt;int&gt;(nullable: false)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                },</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                constraints: table =&gt;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    table.PrimaryKey(&quot;PK_UserBPFile&quot;, x =&gt; x.Id);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                });</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.CreateTable(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;UserPropertys&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                columns: table =&gt; new</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Key = table.Column&lt;string&gt;(maxLength: 100, nullable: false),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    AppUserId = table.Column&lt;int&gt;(nullable: false),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Value = table.Column&lt;string&gt;(maxLength: 100, nullable: false),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Text = table.Column&lt;string&gt;(nullable: true)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                },</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                constraints: table =&gt;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    table.PrimaryKey(&quot;PK_UserPropertys&quot;, x =&gt; new { x.Key, x.AppUserId, x.Value });</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    table.ForeignKey(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        name: &quot;FK_UserPropertys_Users_AppUserId&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        column: x =&gt; x.AppUserId,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        principalTable: &quot;Users&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        principalColumn: &quot;Id&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                        onDelete: ReferentialAction.Cascade);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                });</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.CreateTable(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;UserTags&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                columns: table =&gt; new</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    UserId = table.Column&lt;int&gt;(nullable: false),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Tag = table.Column&lt;string&gt;(maxLength: 100, nullable: false),</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    CreatedTime = table.Column&lt;DateTime&gt;(nullable: false)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                },</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                constraints: table =&gt;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    table.PrimaryKey(&quot;PK_UserTags&quot;, x =&gt; new { x.UserId, x.Tag });</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                });</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.CreateIndex(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;IX_UserPropertys_AppUserId&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;UserPropertys&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                column: &quot;AppUserId&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        protected override void Down(MigrationBuilder migrationBuilder)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropTable(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;UserBPFile&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropTable(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;UserPropertys&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropTable(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;UserTags&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Address&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Avatar&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;City&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;CityId&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Email&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Gender&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Phone&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;ProvinceId&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            migrationBuilder.DropColumn(</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                name: &quot;Tel&quot;,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                table: &quot;Users&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>}</div>
+</body>
+</html>

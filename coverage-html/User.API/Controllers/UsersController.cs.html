@@ -1,0 +1,217 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using System.Threading.Tasks;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using DotNetCore.CAP;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.AspNetCore.JsonPatch;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.AspNetCore.Mvc;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.EntityFrameworkCore;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using Microsoft.Extensions.Logging;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using User.API.Data;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using User.API.IntergrationEvents;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>using User.API.Models;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>namespace User.API.Controllers</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>{</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    [Route(&quot;api/users&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    public class UsersController : BaseController</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        private readonly UserContext _userContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        private readonly ILogger&lt;UsersController&gt; _logger;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        private readonly ICapPublisher _capPublisher;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public UsersController(UserContext userContext, ILogger&lt;UsersController&gt; logger, ICapPublisher capPublisher)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            _userContext = userContext;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            _logger = logger;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            _capPublisher = capPublisher;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        private async Task RasieUserInfoChangedEventAsyncTask(AppUser user)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            if (_userContext.Entry(user).Property(x =&gt; x.Name).IsModified ||</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                _userContext.Entry(user).Property(x =&gt; x.Company).IsModified ||</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                _userContext.Entry(user).Property(x =&gt; x.Title).IsModified ||</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                _userContext.Entry(user).Property(x =&gt; x.Phone).IsModified ||</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                _userContext.Entry(user).Property(x =&gt; x.Avatar).IsModified)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                var @event = new AppUserInfoChangedEvent()</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Avatar = user.Avatar,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Company = user.Company,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Id = user.Id,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Name = user.Name,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Phone = user.Phone,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    Title = user.Title</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                };</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                await _capPublisher.PublishAsync&lt;AppUserInfoChangedEvent&gt;(&quot;finbook.userapi.userprofilechanged&quot;, @event);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        // GET api/values</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpGet]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; Get()</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var user = await _userContext.Users</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                  .AsNoTracking()</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                  .Include(u =&gt; u.Properties)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                  .SingleOrDefaultAsync(u =&gt; u.Id == userIdentity.UserId);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            if (user == null)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                throw new UserOperationException($&quot;错误的用户上下文Id : {userIdentity.UserId}&quot;);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Json(user);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [Route(&quot;&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpPatch]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; Patch([FromBody]JsonPatchDocument&lt;AppUser&gt; patch)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var user = await _userContext.Users</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                .Include(u=&gt;u.Properties)</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                .SingleOrDefaultAsync(u =&gt; u.Id == userIdentity.UserId);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            patch.ApplyTo(user);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            if (user?.Properties != null)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                foreach (var property in user?.Properties)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    _userContext.Entry(property).State = EntityState.Deleted;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                var originProperties = await _userContext.UserProperties.AsNoTracking()</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    .Where(t =&gt; t.AppUserId == userIdentity.UserId).ToListAsync();</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                var allProperties = originProperties.Union(user.Properties).Distinct();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                var removedPropoerties = originProperties.Except(user.Properties);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                var newPropoerties = allProperties.Except(originProperties);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                foreach (var property in removedPropoerties)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    _userContext.Remove(property);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    //_userContext.Entry(property).State = EntityState.Deleted; </div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                foreach (var property in newPropoerties)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    _userContext.Add(property);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                    //_userContext.Entry(property).State = EntityState.Added;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>                }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>          </div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            using (var trans = await _userContext.Database.BeginTransactionAsync())</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                await RasieUserInfoChangedEventAsyncTask(user);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                _userContext.Update(user);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                await _userContext.SaveChangesAsync();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                trans.Commit();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Json(user);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// 检查或者创建用户（当用户手机号不存在的时候则创建用户）</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;/summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;param name=&quot;phone&quot;&gt;&lt;/param&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;returns&gt;&lt;/returns&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [Route(&quot;check-or-create&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpPost]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; CheckOrCreate(string phone)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            //throw new Exception(&quot;就要错误&quot;);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var user = await _userContext.Users.SingleOrDefaultAsync(u =&gt; u.Phone == phone);</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            if (user == null)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user = new AppUser { Phone = phone };</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                _userContext.Users.Add(user);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                await _userContext.SaveChangesAsync();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Ok(new</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user.Id,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user.Name,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user.Company,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user.Phone,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user.Title,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                user.Avatar</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            });</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// 获取用户标签选项数据</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;/summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;returns&gt;&lt;/returns&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpGet(&quot;tags&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; GetUserTags()</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Ok(await _userContext.UserTags.Where(u =&gt; u.UserId == userIdentity.UserId).ToListAsync());</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// 根据手机号查询用户资料</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;/summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;param name=&quot;phone&quot;&gt;&lt;/param&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;returns&gt;&lt;/returns&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpPost(&quot;search&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; Search(string phone)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Ok(await _userContext.Users.Include(u =&gt; u.Properties).SingleOrDefaultAsync(u =&gt; u.Id == userIdentity.UserId));</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// 更新用户标签数据</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;/summary&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;param name=&quot;tags&quot;&gt;&lt;/param&gt;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        /// &lt;returns&gt;&lt;/returns&gt;\</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpPut(&quot;tags&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; UpdateUserTags([FromBody]List&lt;string&gt; tags)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var originTags = await _userContext.UserTags.Where(u =&gt; u.UserId == userIdentity.UserId).ToArrayAsync();</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var newTags = tags.Except(originTags.Select(t =&gt; t.Tag));</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            await _userContext.UserTags.AddRangeAsync(newTags.Select(t =&gt; new UserTag</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                CreatedTime = DateTime.Now,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                UserId = userIdentity.UserId,</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                Tag = t</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }));</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            await _userContext.SaveChangesAsync();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Ok();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        [HttpGet(&quot;baseinfo/{userId}&quot;)]</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        public async Task&lt;IActionResult&gt; GetBaseInfo(int userId)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        {</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            // TBD 检查用户是否好友关系</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            var user = await _userContext.Users.SingleOrDefaultAsync(u =&gt; u.Id == userId);</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            if (user == null)</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            {</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>                return NotFound();</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>            }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EACECC;" title=""><span style="margin-right: 5px;">&nbsp;</span>            return Ok(new { user.Id, user.Name, user.Company, user.Title, user.Avatar });</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;" title=""><span style="margin-right: 5px;">&nbsp;</span>}</div>
+</body>
+</html>

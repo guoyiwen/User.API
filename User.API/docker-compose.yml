@@ -1,0 +1,14 @@
+version: '3'
+
+services: 
+  web:
+    build: .
+    container_name: 'aspnetcore'
+    ports:
+      - '8003:80'
+    networks:
+      - net_db
+networks:
+  net_db:
+    external: true
+

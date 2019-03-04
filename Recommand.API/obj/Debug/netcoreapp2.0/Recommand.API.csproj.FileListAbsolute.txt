@@ -1,0 +1,14 @@
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Recommand.API.deps.json
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Recommand.API.runtimeconfig.json
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Recommand.API.runtimeconfig.dev.json
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Recommand.API.dll
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Recommand.API.pdb
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Resilience.dll
+D:\project\User.API\Recommand.API\bin\Debug\netcoreapp2.0\Resilience.pdb
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.csprojAssemblyReference.cache
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.csproj.CoreCompileInputs.cache
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.AssemblyInfoInputs.cache
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.AssemblyInfo.cs
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.csproj.CopyComplete
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.dll
+D:\project\User.API\Recommand.API\obj\Debug\netcoreapp2.0\Recommand.API.pdb
